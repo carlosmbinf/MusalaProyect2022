@@ -1,32 +1,46 @@
 {
-  "name": "MustafaProyect",
+  "name": "VIDKAR",
   "private": true,
   "scripts": {
-    "start": "meteor run --allow-superuser",
+    "start": "MONGO_URL='mongodb://root:lastunas123@152.206.177.186:27017/meteor' meteor run --port 6000 --settings=settings.json --allow-superuser",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@babel/runtime": "^7.17.9",
-    "@material-ui/core": "^4.12.4",
-    "meteor-node-stubs": "^1.2.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^6.3.0"
-  },
-  "devDependencies": {
-    "@types/meteor": "^1.4.87",
-    "@types/mocha": "^8.2.3",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
-    "typescript": "^4.6.3"
+    "@babel/runtime": "^7.8.4",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@inovua/reactdatagrid-community": "^4.0.10",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@material-ui/styles": "^4.10.0",
+    "@mui/icons-material": "^5.4.2",
+    "@mui/material": "^5.4.2",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "bootstrap": "^5.2.0",
+    "meteor-node-stubs": "^1.0.0",
+    "moment": "^2.29.1",
+    "node-cron": "^3.0.0",
+    "primeflex": "^3.2.1",
+    "primeicons": "^5.0.0",
+    "primereact": "^8.3.0",
+    "re2": "^1.17.4",
+    "react": "^16.14.0",
+    "react-dom": "^16.13.1",
+    "react-reveal": "^1.2.2",
+    "react-router-dom": "^5.2.0",
+    "router": "^1.3.5",
+    "simpl-schema": "^1.9.0",
+    "styled-components": "^5.2.1"
   },
   "meteor": {
     "mainModule": {
-      "client": "client/main.tsx",
-      "server": "server/main.ts"
+      "client": "client/main.jsx",
+      "server": "server/main.js"
     },
-    "testModule": "tests/main.ts"
+    "testModule": "tests/main.js"
   }
 }
