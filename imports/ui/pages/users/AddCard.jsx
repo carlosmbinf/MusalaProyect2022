@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserCard() {
+export default function AddCard(option) {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
  
@@ -137,7 +137,7 @@ export default function UserCard() {
       <Fade top
       >
         <Grid className={classes.root2}>
-        <Link to={"/create-user"} className={classes.link}>
+        <Link to={option.dir} className={classes.link}>
           <Button color="inherit" className={classes.boton}>
             
               <Paper elevation={5} className={classes.rootADD}>
@@ -156,7 +156,7 @@ export default function UserCard() {
                         </Grid>
                         <Grid item>
                           <Typography color="secondary">
-                            CREATE USUARIO
+                            {option.name}
                           </Typography>
                         </Grid>
                     </Grid>

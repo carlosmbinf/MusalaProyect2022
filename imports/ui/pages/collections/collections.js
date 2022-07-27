@@ -3,34 +3,22 @@ import SimpleSchema from 'simpl-schema';
 import { Meteor } from "meteor/meteor";
 
 
+
 SimpleSchema.extendOptions(['autoform']);
 
-export const PelisCollection = new Mongo.Collection('pelisRegister');
+export const GatewaysCollection = new Mongo.Collection('Gateways');
+export const PeripheralsCollection = new Mongo.Collection('Peripherals');
 
 
-export const SchemaPelisCollection = new SimpleSchema({
-  nombrePeli:{
-    type: String,
+export const SchemaPeripheralsCollection = new SimpleSchema({
+  uid:{
+    type: Number,
+    defaultValue: 0,
+    optional: false
   },
-  urlPeli: {
+  vendor: {
     type: String,
-  },
-  urlBackground: {
-    type: String,
-  },
-  descripcion: {
-    type: String,
-  },
-  urlTrailer: {
-    type: String,
-    defaultValue: "",
-    optional: true
-  },
-  tamano:{
-    type: String,
-  },
-  mostrar:{
-    type: String,
+    optional: false
   },
   createdAt: {
     type: Date,
@@ -44,40 +32,75 @@ export const SchemaPelisCollection = new SimpleSchema({
       }
     }
   },
-  subtitulo: {
+  status: {
     type: String,
-    defaultValue: "",
-    optional: true,
+    defaultValue: "offline",
+    optional: true
   },
-  vistas: {
-    type: Number,
-    defaultValue: 0,
-  },
-  year: {
-    type: Number,
-    defaultValue: 1900,
-    // min: 1900,
-  },
-  textSubtitle: {
+});
+
+PeripheralsCollection.attachSchema(SchemaPeripheralsCollection);
+
+export const SchemaGatewaysCollection = new SimpleSchema({
+  // serialNumber: {
+  //   type: String,
+  //   unique: true,
+  //   optional: false,
+  //   custom() {
+  //     if (Meteor.isClient && this.isSet) {
+  //       Meteor.call("accountsIsUsernameAvailable", this.value, (error, result) => {
+  //         if (!result) {
+  //           this.validationContext.addValidationErrors([{
+  //             name: "username",
+  //             type: "notUnique"
+  //           }]);
+  //         }
+  //       });
+  //     }
+  //   }
+  // },
+  // vendor: {
+  //   type: String,
+  // },
+  name: {
     type: String,
-    defaultValue: "",
-    optional: true,
+    optional: false
   },
-  clasificacion: {
+  ip4: {
+    type: String,
+    regEx: SimpleSchema.RegEx.IPv4,
+    optional: false
+    // regEx({ label, regExp }) {
+    //   switch (regExp) {
+    //     case (SimpleSchema.RegEx.IPv4.toString()):
+    //       return "IPv4 address is invalid";
+    //     default:
+    //       return "There are errors in the IPv4 address";
+    //   }
+    // },
+  },
+  peripherals: {
     type: Array,
     defaultValue: [],
+    maxCount: 10,
+    max: 10,
+    exclusiveMax: true,
+  
   },
-  'clasificacion.$': { type: String },
-  idimdb:{
-      type: String,
-      defaultValue: "",
-      optional: true,
+  'peripherals.$': { 
+    type: String,
+    minCount: 0,
+    maxCount: 10,
+  // max:10,
+  exclusiveMax:true
   }
 });
 
-PelisCollection.attachSchema(SchemaPelisCollection);
+GatewaysCollection.attachSchema(SchemaGatewaysCollection);
 
-PelisCollection.allow({
+
+
+PeripheralsCollection.allow({
     insert(doc) {
         // The user must be logged in and the document must be owned by the user.
         return true;
@@ -90,8 +113,24 @@ PelisCollection.allow({
     
       remove(userId, doc) {
         // Can only remove your own documents.
-        return Meteor.users.findOne({ _id: userId }).profile.role == "admin";
+        return true;
       },
+})
+GatewaysCollection.allow({
+  insert(doc) {
+      // The user must be logged in and the document must be owned by the user.
+      return true;
+    },
+  
+    update() {
+      // Can only change your own documents.
+      return true;
+    },
+  
+    remove(userId, doc) {
+      // Can only remove your own documents.
+      return true;
+    },
 })
 Meteor.users.allow({
   insert(doc) {

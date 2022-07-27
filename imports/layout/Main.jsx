@@ -21,12 +21,13 @@ import {
   useParams,
 } from "react-router-dom";
 
-import UserCard from "../ui/pages/users/UserCard";
+import AddCard from "../ui/pages/users/AddCard";
 import UsersTable from "../ui/pages/users/UsersTable";
 import UserCardDetails from "../ui/pages/users/UserCardDetails";
-import CreateUsers from "../ui/pages/users/CreateUsers";
 
 import { Grid, Zoom } from "@material-ui/core";
+import CreatePeripheral from "../ui/pages/users/CreatePeripheral";
+import CreateGateway from "../ui/pages/users/CreateGateway";
 const useStyles = makeStyles((theme) => ({
   // necessary for content to be below app bar
   root: {
@@ -67,23 +68,32 @@ export default function Main() {
         renders the first one that matches the current URL. */}
 
       <Switch>
-      <Route path="/create-user">
-          <div style={{ paddingBottom: "7em" }}>
+      <Route path="/add-peripheral">
+          <div>
           <Zoom in={true}>
-          <CreateUsers />
+          <CreatePeripheral />
+              </Zoom>
+              
+          </div>
+
+        </Route>
+        <Route path="/add-gateway">
+          <div>
+          <Zoom in={true}>
+          <CreateGateway />
               </Zoom>
               
           </div>
 
         </Route>
         <Route path="/users/:id">
-          <div style={{ paddingBottom: "7em" }}>
+          <div >
             <UserCardDetails />
           </div>
 
         </Route>
         <Route path="/users">
-          <div style={{ paddingBottom: "7em" }}>
+          <div >
               <Grid
                 container
                 direction="row"
@@ -91,7 +101,8 @@ export default function Main() {
                 alignItems="center"
               >
                 <Grid item xs={12} className={classes.root}>
-                  <UserCard withCreate="true" />
+                  <AddCard dir="/add-peripheral" name="Add Peripheral"/>
+                  <AddCard dir="/add-gateway" name="Add Gateway"/>
                 </Grid>
                 <Grid item xs={12}>
                   <UsersTable />
@@ -104,7 +115,7 @@ export default function Main() {
 
         </Route>
         <Route path="/">
-          <div style={{ paddingBottom: "7em" }}>
+          <div >
               <Grid
                 container
                 direction="row"
@@ -112,7 +123,8 @@ export default function Main() {
                 alignItems="center"
               >
                 <Grid item xs={12} className={classes.root}>
-                  <UserCard withCreate="true" />
+                <AddCard dir="/add-peripheral" name="Add Peripheral"/>
+                  <AddCard dir="/add-gateway" name="Add Gateway"/>
                 </Grid>
                 <Grid item xs={12}>
                   <UsersTable />
