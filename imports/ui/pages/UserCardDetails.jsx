@@ -37,7 +37,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { Link, useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import { ServersCollection, VentasCollection, PreciosCollection, MensajesCollection } from "../collections/collections"
+import { ServersCollection, VentasCollection, PreciosCollection, MensajesCollection } from "./collections/collections"
 //icons
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
@@ -48,7 +48,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SendIcon from "@material-ui/icons/Send";
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 
-import { OnlineCollection, LogsCollection, RegisterDataUsersCollection } from "../collections/collections";
+import { OnlineCollection, LogsCollection, RegisterDataUsersCollection } from "./collections/collections";
 import { Autocomplete } from "@material-ui/lab";
 
 

@@ -21,13 +21,13 @@ import {
   useParams,
 } from "react-router-dom";
 
-import AddCard from "../ui/pages/users/AddCard";
-import UsersTable from "../ui/pages/users/UsersTable";
-import UserCardDetails from "../ui/pages/users/UserCardDetails";
+import AddCard from "../ui/pages/AddCard";
 
 import { Grid, Zoom } from "@material-ui/core";
-import CreatePeripheral from "../ui/pages/users/CreatePeripheral";
-import CreateGateway from "../ui/pages/users/CreateGateway";
+import CreatePeripheral from "../ui/pages/CreatePeripheral";
+import CreateGateway from "../ui/pages/CreateGateway";
+import GatewayTable from "../ui/pages/GatewayTable";
+import PeripheralTable from "../ui/pages/PeripheralTable";
 const useStyles = makeStyles((theme) => ({
   // necessary for content to be below app bar
   root: {
@@ -55,9 +55,11 @@ export default function Main() {
     return Meteor.user();
   });
   const user = (id) => {
-    Meteor.subscribe("user", id,{fields:{
-      'profile.role': 1
-    }});
+    Meteor.subscribe("user", id, {
+      fields: {
+        'profile.role': 1
+      }
+    });
     return Meteor.users.findOne(id)
   }
   return (
@@ -68,71 +70,50 @@ export default function Main() {
         renders the first one that matches the current URL. */}
 
       <Switch>
-      <Route path="/add-peripheral">
+        <Route path="/add-peripheral">
           <div>
-          <Zoom in={true}>
-          <CreatePeripheral />
-              </Zoom>
-              
+            <Zoom in={true}>
+              <CreatePeripheral />
+            </Zoom>
+
           </div>
 
         </Route>
         <Route path="/add-gateway">
           <div>
-          <Zoom in={true}>
-          <CreateGateway />
-              </Zoom>
-              
+            <Zoom in={true}>
+              <CreateGateway />
+            </Zoom>
+
           </div>
 
         </Route>
-        <Route path="/users/:id">
-          <div >
-            <UserCardDetails />
-          </div>
 
-        </Route>
-        <Route path="/users">
-          <div >
-              <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item xs={12} className={classes.root}>
-                  <AddCard dir="/add-peripheral" name="Add Peripheral"/>
-                  <AddCard dir="/add-gateway" name="Add Gateway"/>
-                </Grid>
-                <Grid item xs={12}>
-                  <UsersTable />
-                 
-
-                </Grid>
-              </Grid>
-            
-          </div>
-
-        </Route>
         <Route path="/">
           <div >
-              <Grid
-                container
+            <Grid
+              container
+            >
+              <Grid item
+                container xs={12}
                 direction="row"
                 justify="center"
-                alignItems="center"
-              >
-                <Grid item xs={12} className={classes.root}>
-                <AddCard dir="/add-peripheral" name="Add Peripheral"/>
-                  <AddCard dir="/add-gateway" name="Add Gateway"/>
+                alignItems="center">
+                <Grid >
+                  <AddCard dir="/add-gateway" name="Add Gateway" />
                 </Grid>
-                <Grid item xs={12}>
-                  <UsersTable />
-                 
-
+                <Grid>
+                  <AddCard dir="/add-peripheral" name="Add Peripheral" />
                 </Grid>
               </Grid>
-            
+              <Grid item xs={12}>
+                <GatewayTable />
+                <PeripheralTable />
+
+
+              </Grid>
+            </Grid>
+
           </div>
 
         </Route>

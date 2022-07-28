@@ -13,7 +13,6 @@ import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 import Fade from 'react-reveal/Fade';
-import {VentasCollection} from "../collections/collections";
 //icons
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";

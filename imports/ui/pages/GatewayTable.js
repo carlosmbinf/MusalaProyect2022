@@ -36,7 +36,7 @@ import "primereact/resources/themes/bootstrap4-dark-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
-import "./UsersTable.css";
+import "./Table.css";
 import { Dropdown } from "primereact/dropdown";
 //icons
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -53,12 +53,13 @@ import BlockIcon from '@material-ui/icons/Block';
 //Collections
 import {
   DescargasCollection,
+  GatewaysCollection,
   LogsCollection,
   MensajesCollection,
   OnlineCollection,
   RegisterDataUsersCollection,
   VentasCollection,
-} from "../collections/collections";
+} from "./collections/collections";
 import { useHistory } from "react-router-dom";
 
 const StyledBadge = withStyles((theme) => ({
@@ -125,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UsersTable(option) {
+export default function GatewayTable(option) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [selectedOnline, setSelectedOnline] = React.useState(null);
@@ -148,29 +149,21 @@ export default function UsersTable(option) {
     setUserId(null)
   };
   
-  const usersRegister = useTracker(() => {
-    Meteor.subscribe("user", option.selector?option.selector:{}, {
-      fields: {
-        '_id': 1,
-        // 'emails': 1,
-        'profile': 1,
-        // 'edad': 1,
-       
-        'username': 1,
-      }
-    });
+  const gatewayRegister = useTracker(() => {
+    Meteor.subscribe("gateway", option.selector?option.selector:{})
+
     let a = [];
 
-    Meteor.users.find(option.selector?option.selector:{}, {
-      sort: {megasGastadosinBytes: -1, 'profile.firstName': 1, 'profile.lastName': 1 }
+    GatewaysCollection.find(option.selector?option.selector:{}, {
+      sort: {name: 1}
     }).map(
       (data) =>
         data &&
         a.push({
-          id: data._id,
-          name:
-            `${data.profile && data.profile.firstName} ${data.profile && data.profile.lastName}`,
-          username: data.username,
+          serialNumber: data._id,
+          name: data.name,
+          ip4: data.ip4,
+          countperipherals: data.peripherals.length
         })
     );
 
@@ -183,11 +176,11 @@ export default function UsersTable(option) {
   const paginatorRight = (
     <Button type="button" icon="pi pi-cloud" className="p-button-text" />
   );
-  const iDBodyTemplate = (rowData) => {
+  const serialNumberBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         {/* <span className="p-column-title">ID</span> */}
-        {rowData.id}
+        {rowData.serialNumber}
       </React.Fragment>
     );
   };
@@ -199,25 +192,34 @@ export default function UsersTable(option) {
       </React.Fragment>
     );
   };
-  const usernameBodyTemplate = (rowData) => {
+  const ip4BodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         {/* <span className="p-column-title">Username</span> */}
-        {rowData.username}
+        {rowData.ip4}
       </React.Fragment>
     );
   };
 
 
-  const eliminarUser = async (id) => {
+  const eliminarGateway = async (id) => {
  
 
-    await Meteor.users.remove(id);
+    await Meteor.call("removeGateway",id,(error,message)=>{
+      if(error){
+        setOpenAlert(false);
+        alert("An unexpected error occurred");
+        console.log(error)
+      }else{
+        setOpenAlert(false);
+        alert(message);
+      }
+      
+    });
 
-    setOpenAlert(false);
-    alert("Usuario Eliminado");
+    
 
-    history.push("/users");
+    history.push("/");
   }
   const eliminarBodyTemplate = (rowData) => {
     return (
@@ -231,7 +233,7 @@ export default function UsersTable(option) {
             aria-label="delete"
             color="primary"
             onClick={() => {
-              handleClickAlertOpen(rowData.id)
+              handleClickAlertOpen(rowData.serialNumber)
               
             }}
           >
@@ -282,7 +284,7 @@ export default function UsersTable(option) {
           <Button onClick={handleAlertClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={() => { eliminarUser(userid) }} color="secondary" autoFocus>
+          <Button onClick={() => { eliminarGateway(userid) }} color="secondary" autoFocus>
             Eliminar
           </Button>
         </DialogActions>
@@ -296,7 +298,7 @@ export default function UsersTable(option) {
               <DataTable
                 ref={dt}
                 className="p-shadow-5 p-datatable-responsive-demo"
-                value={usersRegister}
+                value={gatewayRegister}
                 paginator
                 paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
@@ -309,10 +311,10 @@ export default function UsersTable(option) {
               >
                
                 <Column
-                  field="id"
-                  body={iDBodyTemplate}
+                  field="serialNumber"
+                  body={serialNumberBodyTemplate}
                   wrap="nowrap"
-                  header="ID"
+                  header="Serial Number"
                   filter
                   filterPlaceholder="ID"
                   filterMatchMode="contains"
@@ -326,14 +328,14 @@ export default function UsersTable(option) {
                   filterMatchMode="contains"
                 />
                 <Column
-                  field="username"
-                  header="UserName"
-                  body={usernameBodyTemplate}
+                  field="ip4"
+                  header="IP4"
+                  body={ip4BodyTemplate}
                   filter
-                  filterPlaceholder="UserName"
+                  filterPlaceholder="IP4"
                   filterMatchMode="contains"
                 />
-                <Column field="urlReal" header="" body={urlBodyTemplate} />
+                {/* <Column field="urlReal" header="" body={urlBodyTemplate} /> */}
 
                   <Column
                     field="eliminar"

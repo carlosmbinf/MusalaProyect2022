@@ -27,7 +27,7 @@ import SendIcon from "@material-ui/icons/Send";
 import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Fade } from "react-reveal";
-import { GatewaysCollection } from "../collections/collections";
+import { GatewaysCollection } from "./collections/collections";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateGateway(option) {
+export default function CreatePeripheral(option) {
   const [uid, setuid] = useState("");
   const [vendor, setvendor] = useState("");
   const [idGateway, setidGateway] = useState("");
@@ -107,7 +107,7 @@ export default function CreateGateway(option) {
     return GatewaysCollection.find(option.selector?option.selector:{}).fetch();
   });
 
-  function handleSubmitGateway(event) {
+  function handleSubmitPeripheral(event) {
     event.preventDefault();
     
     
@@ -115,12 +115,11 @@ export default function CreateGateway(option) {
     async function makePostRequest() {
       setLoad(true);
 
-      let gatew = {
-        _id: serialNumber,
-        name,
-        ip4
+      let periphe = {
+        uid,
+        vendor
       }
-      await Meteor.call("addGateway", gatew, function (error, mensaje) {
+      await Meteor.call("addPeripheral", periphe,idGateway, function (error, mensaje) {
         if (error) {
           console.log(error);
         } else {
@@ -136,7 +135,11 @@ export default function CreateGateway(option) {
 
     makePostRequest();
   }
+  
 
+   function handleChange(event) {
+     setidGateway(event.target.value);
+  };
 
   const classes = useStyles();
 
@@ -175,6 +178,7 @@ export default function CreateGateway(option) {
           
         >
           <Paper elevation={5} className={classes.root}>
+            
             {/* <Button onClick={handleClick(TransitionUp)}>Up</Button> */}
 
             <Grid
@@ -186,13 +190,13 @@ export default function CreateGateway(option) {
             >
               <Grid item xs={12}>
                 <Typography variant="h4" color="secondary" component="h2">
-                  Add Gateway
+                  Add Peripheral
                 </Typography>
               </Grid>
               <Grid item xs={12}>
                 <form
                   className={classes.root}
-                  onSubmit={handleSubmitGateway}
+                  onSubmit={handleSubmitPeripheral}
                   // noValidate
                   autoComplete="false"
                 >
@@ -202,14 +206,14 @@ export default function CreateGateway(option) {
                         <TextField
                           required
                           className={classes.margin}
-                          id="serialNumber"
-                          name="serialNumber"
-                          label="Serial Number"
+                          id="uid"
+                          name="uid"
+                          label="UID"
                           variant="outlined"
                           color="secondary"
-                          type="string"
-                          value={serialNumber}
-                          onInput={(e) => setserialNumber(e.target.value)}
+                          type="number"
+                          value={uid}
+                          onInput={(e) => setuid(e.target.value)}
                         // InputProps={{
                         //   startAdornment: (
                         //     <InputAdornment position="start">
@@ -225,14 +229,14 @@ export default function CreateGateway(option) {
                         <TextField
                           required
                           className={classes.margin}
-                          id="name"
-                          name="name"
-                          label="Name"
+                          id="vendor"
+                          name="vendor"
+                          label="Vendor"
                           variant="outlined"
                           color="secondary"
                           type="string"
-                          value={name}
-                          onInput={(e) => setname(e.target.value)}
+                          value={vendor}
+                          onInput={(e) => setvendor(e.target.value)}
                         // InputProps={{
                         //   startAdornment: (
                         //     <InputAdornment position="start">
@@ -243,30 +247,34 @@ export default function CreateGateway(option) {
                         />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={4} >
-                      <FormControl required variant="outlined">
-                        <TextField
-                          required
-                          className={classes.margin}
-                          id="ip4"
-                          name="ip4"
-                          label="IP4"
-                          variant="outlined"
-                          color="secondary"
-                          type="string"
-                          value={ip4}
-                          onInput={(e) => setip4(e.target.value)}
-                        // InputProps={{
-                        //   startAdornment: (
-                        //     <InputAdornment position="start">
-                        //       <AccountCircle />
-                        //     </InputAdornment>
-                        //   ),
-                        // }}
-                        />
+                    <Grid item xs={12} md={4} lg={3}>
+                      <FormControl
+                        variant="outlined"
+                        className={classes.formControl}
+                        required
+                      >
+                        <InputLabel id="demo-simple-select-outlined-label">
+                          Gateway
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          value={idGateway}
+                          onChange={handleChange}
+                          label="Select the Gateway"
+                          // defaultValue={""}
+                          required={true}
+                        >
+                          {/* <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem> */}
+                          {gatewayList.map(element => <MenuItem key={element._id} value={element._id}>{element.name}</MenuItem>)}
+                          
+                        </Select>
                       </FormControl>
                     </Grid>
                   </Grid>
+
 
                   <Grid item xs={12} className={classes.flex}>
                     <Button
@@ -283,6 +291,7 @@ export default function CreateGateway(option) {
               </Grid>
             </Grid>
           </Paper>
+          
         </Grid>
 
       </Zoom>
