@@ -23,7 +23,7 @@ import {
 
 import AddCard from "../ui/pages/AddCard";
 
-import { Grid, Zoom } from "@material-ui/core";
+import { Chip, Grid, Zoom } from "@material-ui/core";
 import CreatePeripheral from "../ui/pages/CreatePeripheral";
 import CreateGateway from "../ui/pages/CreateGateway";
 import GatewayTable from "../ui/pages/GatewayTable";
@@ -51,17 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Main() {
   const classes = useStyles();
-  const useractual = useTracker(() => {
-    return Meteor.user();
-  });
-  const user = (id) => {
-    Meteor.subscribe("user", id, {
-      fields: {
-        'profile.role': 1
-      }
-    });
-    return Meteor.users.findOne(id)
-  }
+
   return (
     <>
       <div className={classes.toolbar} />
@@ -107,10 +97,11 @@ export default function Main() {
                 </Grid>
               </Grid>
               <Grid item xs={12}>
+                
                 <GatewayTable />
+                
+                
                 <PeripheralTable />
-
-
               </Grid>
             </Grid>
 

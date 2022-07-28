@@ -47,8 +47,8 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
-import CheckIcon from '@material-ui/icons/Check';
-import BlockIcon from '@material-ui/icons/Block';
+import CheckIcon from "@material-ui/icons/Check";
+import BlockIcon from "@material-ui/icons/Block";
 
 //Collections
 import {
@@ -91,13 +91,11 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-
 const useStyles = makeStyles((theme) => ({
   [theme.breakpoints.down("sm")]: {},
   [theme.breakpoints.down("md")]: {},
   [theme.breakpoints.up("md")]: {
-    columnSmoll: {
-    }
+    columnSmoll: {},
   },
   clasificado: {
     background: theme.palette.secondary.main,
@@ -134,7 +132,8 @@ export default function GatewayTable(option) {
   const [selectedRole, setSelectedRole] = React.useState(null);
   const [selectedLimites, setSelectedLimites] = React.useState(null);
   const [selectedConProxy, setSelectedConProxy] = React.useState(null);
-  const [selectedContandoProxy, setSelectedContandoProxy] = React.useState(null);
+  const [selectedContandoProxy, setSelectedContandoProxy] =
+    React.useState(null);
   const dt = React.useRef(null);
   const history = useHistory();
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -142,20 +141,20 @@ export default function GatewayTable(option) {
 
   const handleClickAlertOpen = (id) => {
     setOpenAlert(true);
-    setUserId(id)
+    setUserId(id);
   };
   const handleAlertClose = () => {
     setOpenAlert(false);
-    setUserId(null)
+    setUserId(null);
   };
-  
+
   const gatewayRegister = useTracker(() => {
-    Meteor.subscribe("gateway", option.selector?option.selector:{})
+    Meteor.subscribe("gateway", option.selector ? option.selector : {});
 
     let a = [];
 
-    GatewaysCollection.find(option.selector?option.selector:{}, {
-      sort: {name: 1}
+    GatewaysCollection.find(option.selector ? option.selector : {}, {
+      sort: { name: 1 },
     }).map(
       (data) =>
         data &&
@@ -163,7 +162,7 @@ export default function GatewayTable(option) {
           serialNumber: data._id,
           name: data.name,
           ip4: data.ip4,
-          countperipherals: data.peripherals.length
+          countperipherals: data.peripherals.length,
         })
     );
 
@@ -201,40 +200,31 @@ export default function GatewayTable(option) {
     );
   };
 
-
   const eliminarGateway = async (id) => {
- 
-
-    await Meteor.call("removeGateway",id,(error,message)=>{
-      if(error){
+    await Meteor.call("removeGateway", id, (error, message) => {
+      if (error) {
         setOpenAlert(false);
         alert("An unexpected error occurred");
-        console.log(error)
-      }else{
+        console.log(error);
+      } else {
         setOpenAlert(false);
         alert(message);
       }
-      
     });
 
-    
-
     history.push("/");
-  }
+  };
   const eliminarBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         <span className="p-column-title"></span>
-        <Tooltip
-          title={"Eliminar a " + rowData.name}
-        >
+        <Tooltip title={"Eliminar a " + rowData.name}>
           <IconButton
             // disabled
             aria-label="delete"
             color="primary"
             onClick={() => {
-              handleClickAlertOpen(rowData.serialNumber)
-              
+              handleClickAlertOpen(rowData.serialNumber);
             }}
           >
             <DeleteIcon fontSize="large" />
@@ -247,11 +237,7 @@ export default function GatewayTable(option) {
     return (
       <React.Fragment>
         <span className="p-column-title"></span>
-        <Tooltip
-          title={
-            "Ver Detalles de " + rowData.name
-          }
-        >
+        <Tooltip title={"Ver Detalles de " + rowData.name}>
           <IconButton
             aria-label="delete"
             color="primary"
@@ -268,7 +254,7 @@ export default function GatewayTable(option) {
 
   return (
     <>
-    <Dialog
+      <Dialog
         open={openAlert}
         // onClose={handleAlertClose}
         aria-labelledby="alert-dialog-title"
@@ -284,13 +270,22 @@ export default function GatewayTable(option) {
           <Button onClick={handleAlertClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={() => { eliminarGateway(userid) }} color="secondary" autoFocus>
+          <Button
+            onClick={() => {
+              eliminarGateway(userid);
+            }}
+            color="secondary"
+            autoFocus
+          >
             Eliminar
           </Button>
         </DialogActions>
       </Dialog>
       <div className={classes.drawerHeader}></div>
-
+      <Chip
+        style={{ width: "100%", fontSize: "1.1em" }}
+        label="Gateway Table"
+      />
       <Zoom in={true}>
         <div style={{ width: "100%", padding: 10 }}>
           <div className="datatable-responsive-demo">
@@ -309,7 +304,6 @@ export default function GatewayTable(option) {
                 reorderableColumns={true}
                 // resizableColumns={true}
               >
-               
                 <Column
                   field="serialNumber"
                   body={serialNumberBodyTemplate}
@@ -337,11 +331,11 @@ export default function GatewayTable(option) {
                 />
                 {/* <Column field="urlReal" header="" body={urlBodyTemplate} /> */}
 
-                  <Column
-                    field="eliminar"
-                    header=""
-                    body={eliminarBodyTemplate}
-                  />
+                <Column
+                  field="eliminar"
+                  header=""
+                  body={eliminarBodyTemplate}
+                />
               </DataTable>
             </div>
           </div>

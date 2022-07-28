@@ -23,13 +23,18 @@ if (Meteor.isServer) {
       let idPeripherals;
       let idGateways;
       try {
-        let countPeriph = await GatewaysCollection.findOne(idGateway)
-          .peripherals.length;
+        let gatew = await GatewaysCollection.findOne(idGateway);
+        let countPeriph;
+        if (gatew) {
+          countPeriph = await gatew.peripherals.length;
+        } else {
+          return "The gateway ID is not valid";
+        }
         if (countPeriph < 10) {
           idPeripherals = await PeripheralsCollection.insert(peripheral);
           idGateways = await GatewaysCollection.update(
             { _id: idGateway },
-            { $push: { peripherals: idPeripherals } }
+            { $push: { peripherals: { id: idPeripherals } } }
           );
         } else {
           return `The gateway is at the limit of peripherals`;
@@ -46,36 +51,37 @@ if (Meteor.isServer) {
       try {
         await GatewaysCollection.findOne(idGateways).peripherals.map(
           (idPeripheral) => {
-            PeripheralsCollection.remove(idPeripheral);
+            PeripheralsCollection.remove(idPeripheral.id);
           }
         );
         await GatewaysCollection.remove(idGateways);
+
+        return idGateways
+          ? `Gateway removed successfully`
+          : `Failed to insert gateway, check with developers`;
       } catch (error) {
         console.log(error.message);
         return error.message;
       }
-      return idGateways
-        ? `Gateway removed successfully`
-        : `Failed to insert gateway, check with developers`;
     },
     removePeripheral: async (idPeripheral) => {
       try {
-       console.log( GatewaysCollection.findOne({ 'peripheral': idPeripheral }))
-       console.log(idPeripheral)
-        // await GatewaysCollection.update(
-        //   { peripheral: idPeripheral },
-        //   {
-        //     $pull: { peripheral: idPeripheral },
-        //   }
-        // );
-        // await PeripheralsCollection.remove(idPeripheral);
+        await GatewaysCollection.update(
+          {
+            "peripherals.id": idPeripheral,
+          },
+          { $pull: { peripherals: { id: idPeripheral } } }
+        );
+
+        await PeripheralsCollection.remove(idPeripheral);
+
+        return idPeripheral
+          ? `Peripheral removed successfully`
+          : `Failed to remove Peripheral, check with developers`;
       } catch (error) {
         console.log(error.message);
         return error.message;
       }
-      return idPeripheral
-        ? `Gateway removed successfully`
-        : `Failed to insert gateway, check with developers`;
     },
   });
 }

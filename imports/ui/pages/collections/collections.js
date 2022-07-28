@@ -9,6 +9,12 @@ SimpleSchema.extendOptions(['autoform']);
 export const GatewaysCollection = new Mongo.Collection('Gateways');
 export const PeripheralsCollection = new Mongo.Collection('Peripherals');
 
+export const PeripheralIds = new SimpleSchema({
+  id:{
+    type: String,
+    optional: false
+  },
+});
 
 export const SchemaPeripheralsCollection = new SimpleSchema({
   uid:{
@@ -88,7 +94,7 @@ export const SchemaGatewaysCollection = new SimpleSchema({
   
   },
   'peripherals.$': { 
-    type: String,
+    type: PeripheralIds,
     minCount: 0,
     maxCount: 10,
   // max:10,
