@@ -7,18 +7,6 @@ import {
 if (Meteor.isServer) {
   console.log("Cargando Métodos...");
   Meteor.methods({
-    "test.addGateway": async (gateway) => {
-      let idGateways;
-      try {
-        idGateways = await GatewaysCollection.insert(gateway);
-      } catch (error) {
-        console.log(error.message);
-        return error.message;
-      }
-      return idGateways
-        ? `Gateway added successfully`
-        : `Failed to insert gateway, check with developers`;
-    },
     addGateway: async (gateway) => {
       let idGateways;
       try {
