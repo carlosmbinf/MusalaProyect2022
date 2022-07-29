@@ -1,17 +1,7 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-// import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import {
-  Paper,
-  Box,
-  Grid,
-  Icon,
-  Divider,
   Zoom,
   IconButton,
   Chip,
@@ -23,11 +13,8 @@ import {
 } from "@material-ui/core";
 
 import { Meteor } from "meteor/meteor";
-import { Tracker } from "meteor/tracker";
 import { useTracker } from "meteor/react-meteor-data";
 import Badge from "@material-ui/core/Badge";
-import Avatar from "@material-ui/core/Avatar";
-import { Link, useParams } from "react-router-dom";
 
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -37,28 +24,13 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./Table.css";
-import { Dropdown } from "primereact/dropdown";
 //icons
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
-import PermContactCalendarRoundedIcon from "@material-ui/icons/PermContactCalendarRounded";
-import MailIcon from "@material-ui/icons/Mail";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
-import CheckIcon from "@material-ui/icons/Check";
-import BlockIcon from "@material-ui/icons/Block";
 
 //Collections
 import {
-  DescargasCollection,
   GatewaysCollection,
-  LogsCollection,
-  MensajesCollection,
-  OnlineCollection,
-  RegisterDataUsersCollection,
-  VentasCollection,
 } from "./collections/collections";
 import { useHistory } from "react-router-dom";
 
@@ -126,14 +98,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GatewayTable(option) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const [selectedOnline, setSelectedOnline] = React.useState(null);
-  const [selectedVPN, setSelectedVPN] = React.useState(null);
-  const [selectedRole, setSelectedRole] = React.useState(null);
-  const [selectedLimites, setSelectedLimites] = React.useState(null);
-  const [selectedConProxy, setSelectedConProxy] = React.useState(null);
-  const [selectedContandoProxy, setSelectedContandoProxy] =
-    React.useState(null);
   const dt = React.useRef(null);
   const history = useHistory();
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -233,24 +197,6 @@ export default function GatewayTable(option) {
       </React.Fragment>
     );
   };
-  const urlBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <span className="p-column-title"></span>
-        <Tooltip title={"Ver Detalles de " + rowData.name}>
-          <IconButton
-            aria-label="delete"
-            color="primary"
-            onClick={() => {
-              history.push("/users/" + rowData.id);
-            }}
-          >
-            <ListAltIcon fontSize="large" />
-          </IconButton>
-        </Tooltip>
-      </React.Fragment>
-    );
-  };
 
   return (
     <>
@@ -260,15 +206,15 @@ export default function GatewayTable(option) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Alerta!!!"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Alert!!!"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {`Usted desea eliminar el usuario y sus datos correspondientes?`}?
+            {`Do you want to remove the Gateway and its corresponding Peripherals?`}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAlertClose} color="primary">
-            Cancelar
+            Cancel
           </Button>
           <Button
             onClick={() => {
@@ -277,7 +223,7 @@ export default function GatewayTable(option) {
             color="secondary"
             autoFocus
           >
-            Eliminar
+            Remove
           </Button>
         </DialogActions>
       </Dialog>
@@ -302,7 +248,7 @@ export default function GatewayTable(option) {
                 paginatorLeft={paginatorLeft}
                 paginatorRight={paginatorRight}
                 reorderableColumns={true}
-                // resizableColumns={true}
+              // resizableColumns={true}
               >
                 <Column
                   field="serialNumber"
@@ -329,8 +275,6 @@ export default function GatewayTable(option) {
                   filterPlaceholder="IP4"
                   filterMatchMode="contains"
                 />
-                {/* <Column field="urlReal" header="" body={urlBodyTemplate} /> */}
-
                 <Column
                   field="eliminar"
                   header=""

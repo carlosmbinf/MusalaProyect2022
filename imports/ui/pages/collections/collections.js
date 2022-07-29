@@ -48,26 +48,6 @@ export const SchemaPeripheralsCollection = new SimpleSchema({
 PeripheralsCollection.attachSchema(SchemaPeripheralsCollection);
 
 export const SchemaGatewaysCollection = new SimpleSchema({
-  // serialNumber: {
-  //   type: String,
-  //   unique: true,
-  //   optional: false,
-  //   custom() {
-  //     if (Meteor.isClient && this.isSet) {
-  //       Meteor.call("accountsIsUsernameAvailable", this.value, (error, result) => {
-  //         if (!result) {
-  //           this.validationContext.addValidationErrors([{
-  //             name: "username",
-  //             type: "notUnique"
-  //           }]);
-  //         }
-  //       });
-  //     }
-  //   }
-  // },
-  // vendor: {
-  //   type: String,
-  // },
   name: {
     type: String,
     optional: false
@@ -76,29 +56,14 @@ export const SchemaGatewaysCollection = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.IPv4,
     optional: false
-    // regEx({ label, regExp }) {
-    //   switch (regExp) {
-    //     case (SimpleSchema.RegEx.IPv4.toString()):
-    //       return "IPv4 address is invalid";
-    //     default:
-    //       return "There are errors in the IPv4 address";
-    //   }
-    // },
   },
   peripherals: {
     type: Array,
     defaultValue: [],
-    maxCount: 10,
-    max: 10,
-    exclusiveMax: true,
   
   },
   'peripherals.$': { 
     type: PeripheralIds,
-    minCount: 0,
-    maxCount: 10,
-  // max:10,
-  exclusiveMax:true
   }
 });
 
@@ -136,21 +101,5 @@ GatewaysCollection.allow({
     remove(userId, doc) {
       // Can only remove your own documents.
       return true;
-    },
-})
-Meteor.users.allow({
-  insert(doc) {
-      // The user must be logged in and the document must be owned by the user.
-      return true;
-    },
-  
-    update(userId, doc, fields, modifier) {
-      // Can only change your own documents.
-      return true;
-    },
-  
-    remove(userId, doc) {
-      // Can only remove your own documents.
-      return Meteor.users.findOne({ _id: userId }).profile.role == "admin";
     },
 })

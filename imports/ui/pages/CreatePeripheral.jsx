@@ -83,9 +83,6 @@ export default function CreatePeripheral(option) {
   const [uid, setuid] = useState("");
   const [vendor, setvendor] = useState("");
   const [idGateway, setidGateway] = useState("");
-  const [serialNumber, setserialNumber] = useState("");
-  const [name, setname] = useState("");
-  const [ip4, setip4] = useState("");
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const [transition, setTransition] = React.useState(undefined);
@@ -110,8 +107,6 @@ export default function CreatePeripheral(option) {
   function handleSubmitPeripheral(event) {
     event.preventDefault();
     
-    
-
     async function makePostRequest() {
       setLoad(true);
 
@@ -129,8 +124,6 @@ export default function CreatePeripheral(option) {
           setOpen(true);
         }
       })
-
-
     }
 
     makePostRequest();
@@ -151,7 +144,7 @@ export default function CreatePeripheral(option) {
           aria-label="delete"
           className={classes.margin}
         >
-          <Link to={"/users"}>
+          <Link to={"/"}>
             <ArrowBackIcon fontSize="large" color="secondary" />
           </Link>
         </IconButton>
@@ -214,13 +207,6 @@ export default function CreatePeripheral(option) {
                           type="number"
                           value={uid}
                           onInput={(e) => setuid(e.target.value)}
-                        // InputProps={{
-                        //   startAdornment: (
-                        //     <InputAdornment position="start">
-                        //       <AccountCircle />
-                        //     </InputAdornment>
-                        //   ),
-                        // }}
                         />
                       </FormControl>
                     </Grid>
@@ -237,13 +223,6 @@ export default function CreatePeripheral(option) {
                           type="string"
                           value={vendor}
                           onInput={(e) => setvendor(e.target.value)}
-                        // InputProps={{
-                        //   startAdornment: (
-                        //     <InputAdornment position="start">
-                        //       <AccountCircle />
-                        //     </InputAdornment>
-                        //   ),
-                        // }}
                         />
                       </FormControl>
                     </Grid>

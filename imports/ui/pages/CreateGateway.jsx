@@ -148,7 +148,7 @@ export default function CreateGateway(option) {
           aria-label="delete"
           className={classes.margin}
         >
-          <Link to={"/users"}>
+          <Link to={"/"}>
             <ArrowBackIcon fontSize="large" color="secondary" />
           </Link>
         </IconButton>

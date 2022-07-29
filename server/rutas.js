@@ -11,7 +11,6 @@ const endpoint = router();
 
 if (Meteor.isServer) {
 
-
         
   WebApp.connectHandlers.use(bodyParser.urlencoded({ extended: true }));
   WebApp.connectHandlers.use(endpoint);
