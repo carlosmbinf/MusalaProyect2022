@@ -30,7 +30,7 @@ npm test
 npm start
 ```
 
-## TO ADD GATEWAY
+## To add Gateway
 #### GET or POST to /addgateway with the nexts params in the URL
 ```js
 
