@@ -1,21 +1,27 @@
-# MustafaProyect2022
+# MusalaProyect2022
 
-To add Gateway
-GET to /addgateway 
-Data:{
-    serialnumber
-    name
-    ip4
-}
-example
+## TO ADD GATEWAY
+#### GET to /addgateway with the nexts params in the URL
+```js
+
+    serialnumber //ID of Gateway
+    name 
+    ip4          //IP Validada
+
+```
+#### example
+```bash
 curl http://localhost:3000/addgateway?serialnumber=334-34433-43434&name=Gateway1&ip4=192.168.1.1
+```
 
-To add Peripheral
-GET to /addperipheral 
-Data:{
+## To add Peripheral
+#### GET to /addgateway with the nexts params in the URL
+```js
     uid //ONLY NUMBER
     vendor
     status //OPTIONAL
-}
-example
+```
+#### example
+```bash
 curl http://localhost:3000/addgateway?uid=55662233&vendor=Gateway1&status=offline
+```
