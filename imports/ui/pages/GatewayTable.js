@@ -126,7 +126,7 @@ export default function GatewayTable(option) {
           serialNumber: data._id,
           name: data.name,
           ip4: data.ip4,
-          countperipherals: data.peripherals.length,
+          // countperipherals: data.peripherals.length,
         })
     );
 

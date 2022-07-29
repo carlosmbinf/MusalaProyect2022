@@ -267,7 +267,7 @@ export default function PersistentDrawerLeft() {
         className={classes.root}
       >
         <CssBaseline />
-        <Slide
+        {/* <Slide
           direction="down"
           in={true}
           mountOnEnter
@@ -294,7 +294,7 @@ export default function PersistentDrawerLeft() {
 
             </Toolbar>
           </AppBar>
-        </Slide>
+        </Slide> */}
         <Drawer
           className={classes.drawer}
           variant="persistent"

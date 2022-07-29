@@ -1,5 +1,5 @@
 {
-  "name": "VIDKAR",
+  "name": "proyectReact",
   "private": true,
   "scripts": {
     "start": "MONGO_URL='mongodb://root:lastunas123@152.206.177.186:27017,vidkar-shard-00-01.92q4y.mongodb.net:27017,vidkar-shard-00-02.92q4y.mongodb.net:27017/meteor?ssl=true&replicaSet=atlas-axzwc9-shard-0&authSource=admin&retryWrites=true&w=majority' meteor run --port 6000 --settings=settings.json --allow-superuser",

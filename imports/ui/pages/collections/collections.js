@@ -59,10 +59,9 @@ export const SchemaGatewaysCollection = new SimpleSchema({
   },
   peripherals: {
     type: Array,
-    defaultValue: [],
-  
+    defaultValue: []
   },
-  'peripherals.$': { 
+  'peripherals.$': {
     type: PeripheralIds,
   }
 });

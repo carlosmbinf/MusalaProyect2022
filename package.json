@@ -1,14 +1,14 @@
 {
-  "name": "VIDKAR",
+  "name": "proyectReact",
   "private": true,
   "scripts": {
     "start": "MONGO_URL='mongodb://root:lastunas123@152.206.177.186:27017/meteor' meteor run --port 6000 --settings=settings.json --allow-superuser",
-    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test": "meteor test --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.4",
+    "@babel/runtime": "^7.18.9",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@inovua/reactdatagrid-community": "^4.0.10",
@@ -21,7 +21,7 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
     "bootstrap": "^5.2.0",
-    "meteor-node-stubs": "^1.0.0",
+    "meteor-node-stubs": "^1.2.5",
     "moment": "^2.29.1",
     "node-cron": "^3.0.0",
     "primeflex": "^3.2.1",
