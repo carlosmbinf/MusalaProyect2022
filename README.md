@@ -15,13 +15,12 @@ curl http://localhost:3000/addgateway?serialnumber=334-34433-43434&name=Gateway1
 ```
 
 ## To add Peripheral
-#### GET to /addgateway with the nexts params in the URL
+#### GET to /addperipheral with the nexts params in the URL
 ```js
     uid //ONLY NUMBER
     vendor
-    status //OPTIONAL
 ```
 #### example
 ```bash
-curl http://localhost:3000/addgateway?uid=55662233&vendor=Gateway1&status=offline
+curl http://localhost:3000/addperipheral?uid=55662233&vendor=Gateway1
 ```
