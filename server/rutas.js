@@ -44,7 +44,7 @@ if (Meteor.isServer) {
 
   });
 
-  endpoint.post("/addgateway", async (req, res) => {
+  endpoint.post("/addperipheral", async (req, res) => {
     // console.log(req)
     try {
       console.log(req.query)
