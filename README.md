@@ -34,9 +34,9 @@ npm start
 #### GET or POST to /addgateway with the nexts params in the URL
 ```js
 
-    serialnumber //ID of Gateway
+    serialnumber // ID of Gateway
     name 
-    ip4          //IP Validada
+    ip4          // IP Validada
 
 ```
 #### example
@@ -47,12 +47,13 @@ curl http://localhost:3000/addgateway?serialnumber=334-34433-43434&name=Gateway1
 ## To add Peripheral
 #### GET or POST to /addperipheral with the nexts params in the URL
 ```js
-    uid //ONLY NUMBER
+    uid             // ONLY NUMBER
     vendor
+    serialnumber    // Gateway serial number
 ```
 #### example
 ```bash
-curl http://localhost:3000/addperipheral?uid=55662233&vendor=Gateway1
+curl http://localhost:3000/addperipheral?uid=55662233&vendor=Gateway1&serialnumber=334-34433-43434
 ```
 ```js
 //This returns an element JSON
