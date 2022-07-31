@@ -43,6 +43,16 @@ npm start
 ```bash
 curl http://localhost:3000/addgateway?serialnumber=334-34433-43434&name=Gateway1&ip4=192.168.1.1
 ```
+```js
+// This returns an element JSON
+{
+    result: "Message returned"
+}
+//In case of error
+{
+    error: "Message returned"
+}
+```
 
 ## To add Peripheral
 #### GET or POST to /addperipheral with the nexts params in the URL
@@ -53,11 +63,101 @@ curl http://localhost:3000/addgateway?serialnumber=334-34433-43434&name=Gateway1
 ```
 #### example
 ```bash
-curl http://localhost:3000/addperipheral?uid=55662233&vendor=Gateway1&serialnumber=334-34433-43434
+curl http://localhost:3000/addperipheral?uid=55662233&vendor=Vendor1&serialnumber=334-34433-43434
 ```
 ```js
-//This returns an element JSON
+// This returns an element JSON
 {
-result: "Message returned"
+    result: "Message returned"
+}
+//In case of error
+{
+    error: "Message returned"
+}
+```
+
+## To remove Gateway
+#### GET or POST to /addgateway with the nexts params in the URL
+```js
+    serialnumber // ID of Gateway
+```
+#### example
+```bash
+curl http://localhost:3000/removegateway?serialnumber=334-34433-43434
+```
+```js
+// This returns an element JSON
+{
+    result: "Message returned"
+}
+//In case of error
+{
+    error: "Message returned"
+}
+```
+
+## To remove Peripheral
+#### GET or POST to /addperipheral with the nexts params in the URL
+```js
+    id             // Peripheral id
+```
+#### example
+```bash
+curl http://localhost:3000/removeperipheral?id=3ArJugbZGnRet3r3d
+```
+```js
+// This returns an element JSON
+{
+    result: "Message returned"
+}
+//In case of error
+{
+    error: "Message returned"
+}
+```
+
+## To update Gateway
+#### GET or POST to /updategateway with the nexts params in the URL
+```js
+    serialnumber // ID of the Gateway to update
+    //Values ​​to Update
+    name
+    ip4          // IP Validada
+```
+#### example
+```bash
+curl http://localhost:3000/updategateway?serialnumber=334-34433-43434&name=Gateway1&ip4=192.168.1.1
+```
+```js
+// This returns an element JSON
+{
+    result: "Message returned"
+}
+//In case of error
+{
+    error: "Message returned"
+}
+```
+
+## To update Peripheral
+#### GET or POST to /updateperipheral with the nexts params in the URL
+```js
+    id              // ID of the Peripheral to update
+    //Values ​​to Update
+    uid             // ONLY NUMBER
+    vendor
+```
+#### example
+```bash
+curl 
+```
+```js
+// This returns an element JSON
+{
+    result: "Message returned"
+}
+//In case of error
+{
+    error: "Message returned"
 }
 ```
