@@ -13,11 +13,13 @@ if (Meteor.isServer) {
         idGateways = await GatewaysCollection.insert(gateway);
       } catch (error) {
         console.log(error.message);
-        return error.message;
+        return { error: error.message };
       }
+
       return idGateways
-        ? `Gateway added successfully`
-        : `Failed to insert gateway, check with developers`;
+        ? { result: `Gateway added successfully` }
+        : { error: `No insert was done, check the data` }
+
     },
     addPeripheral: async (peripheral, idGateway) => {
       let idPeripherals;
@@ -28,7 +30,7 @@ if (Meteor.isServer) {
         if (gatew) {
           countPeriph = await gatew.peripherals.length;
         } else {
-          return "The gateway ID is not valid";
+          return { error: "The gateway ID is not valid" };
         }
         if (countPeriph < 10) {
           idPeripherals = await PeripheralsCollection.insert(peripheral);
@@ -37,31 +39,35 @@ if (Meteor.isServer) {
             { $push: { peripherals: { id: idPeripherals } } }
           );
         } else {
-          return `The gateway is at the limit of peripherals`;
+          return { error: `The gateway is at the limit of peripherals` };
         }
       } catch (error) {
         console.log(error.message);
-        return error.message;
+        return { error: error.message };
       }
-      return idPeripherals && idGateways
-        ? `Peripheral added successfully`
-        : `Failed to insert Peripheral, check with developers`;
+      return (idPeripherals && idGateways)
+        ? { result: `Peripheral added successfully` }
+        : { error: `No insert was done, check the data` }
     },
     removeGateway: async (idGateways) => {
+      let exist = await GatewaysCollection.find(idGateways).count()
+      if (exist == 0) return { error: "Insert a valid Gateway ID" }
       try {
         await GatewaysCollection.findOne(idGateways).peripherals.map(
           (idPeripheral) => {
             PeripheralsCollection.remove(idPeripheral.id);
           }
         );
-        await GatewaysCollection.remove(idGateways);
+        let resultremove = await GatewaysCollection.remove(idGateways);
 
-        return idGateways
-          ? `Gateway removed successfully`
-          : `Failed to insert gateway, check with developers`;
+        return resultremove ? {
+          result: `Gateway removed successfully`
+        } : {
+          error: `No remove was done, check the serial number of the Gateway`
+        };
       } catch (error) {
         console.log(error.message);
-        return error.message;
+        return { error: error.message };
       }
     },
     removePeripheral: async (idPeripheral) => {
@@ -73,15 +79,57 @@ if (Meteor.isServer) {
           { $pull: { peripherals: { id: idPeripheral } } }
         );
 
-        await PeripheralsCollection.remove(idPeripheral);
+        let exist = await PeripheralsCollection.find(idPeripheral).count()
+        if (exist == 0) return { error: "Insert a valid Peripheral ID" }
 
-        return idPeripheral
-          ? `Peripheral removed successfully`
-          : `Failed to remove Peripheral, check with developers`;
+        let resultPeripheral = await PeripheralsCollection.remove(idPeripheral);
+
+        return (resultPeripheral) ? {
+          result: `Peripheral removed successfully`
+        }
+          : {
+            error: `No remove was done, check the Peripheral ID`
+          };
       } catch (error) {
         console.log(error.message);
-        return error.message;
+        return { error: error.message };
       }
+    },
+    updateGateway: async (idGateway, gateway) => {
+      let result
+      let exist = await GatewaysCollection.find(idGateway).count()
+      if (exist == 0) return { error: "Insert a valid Gateway ID" }
+
+      try {
+        result = await GatewaysCollection.update(idGateway, { $set: gateway });
+      } catch (error) {
+        console.log(error.message);
+        return { error: error.message };
+      }
+      return result ? {
+        result: `Gateway updated successfully`
+      }
+        : {
+          error: `No update was done, check the serial number of the Gateway`
+        };
+    },
+    updatePeripheral: async (idPeripheral, peripheral) => {
+      let result
+      let exist = await PeripheralsCollection.find(idPeripheral).count()
+      if (exist == 0) return { error: "Insert a valid Peripheral ID" }
+
+      try {
+        result = await PeripheralsCollection.update(idPeripheral, { $set: peripheral });
+      } catch (error) {
+        console.log(error.message);
+        return { error: error.message };
+      }
+      return result ? {
+        result: `Peripheral updated successfully`
+      }
+        : {
+          error: `No update was done, check the Peripherical ID`
+        };
     },
   });
 }

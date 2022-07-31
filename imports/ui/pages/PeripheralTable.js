@@ -189,11 +189,12 @@ export default function PeripheralTable(option) {
         console.log(error);
       } else {
         setOpenAlert(false);
-        alert(message);
+        message.error ? alert(message.error) : alert(message.result)
+
       }
     });
 
-    history.push("/");
+    // history.push("/");
   };
   const eliminarBodyTemplate = (rowData) => {
     return (

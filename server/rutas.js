@@ -20,7 +20,7 @@ if (Meteor.isServer) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
           res.end(JSON.stringify({ result: mensaje }))
@@ -42,12 +42,12 @@ if (Meteor.isServer) {
     // console.log(req)
     try {
       console.log(req.query)
-      
+
       await Meteor.call("removeGateway", req.query.serialnumber, function (error, mensaje) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
           res.end(JSON.stringify({ result: mensaje }))
@@ -70,7 +70,7 @@ if (Meteor.isServer) {
     try {
       console.log(req.query)
       let gateway = {
-        _id:req.query.serialnumber,
+        _id: req.query.serialnumber,
         name: req.query.name,
         ip4: req.query.ip4
       }
@@ -78,10 +78,10 @@ if (Meteor.isServer) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ result: mensaje }))
+          res.end(JSON.stringify(mensaje))
         }
       })
       // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
@@ -101,7 +101,7 @@ if (Meteor.isServer) {
     try {
       console.log(req.query)
       let gateway = {
-        _id:req.query.serialnumber,
+        _id: req.query.serialnumber,
         name: req.query.name,
         ip4: req.query.ip4
       }
@@ -109,10 +109,72 @@ if (Meteor.isServer) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ result: mensaje }))
+          res.end(JSON.stringify(mensaje))
+        }
+      })
+      // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+
+      //   res.end(req.query.idPeli);
+
+
+
+    } catch (error) {
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ error: error.message }))
+    }
+
+  });
+  endpoint.get("/updategateway", async (req, res) => {
+    // console.log(req)
+    try {
+      console.log(req.query)
+      let id = req.query.serialnumber?req.query.serialnumber:{}
+      let gateway = {
+        name: req.query.name,
+        ip4: req.query.ip4
+      }
+      await Meteor.call("updateGateway",id, gateway, function (error, mensaje) {
+        if (error) {
+          console.log(error);
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: error.message }))
+        } else {
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(mensaje))
+        }
+      })
+      // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+
+      //   res.end(req.query.idPeli);
+
+
+
+    } catch (error) {
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ error: error.message }))
+    }
+
+  });
+  endpoint.post("/updategateway", async (req, res) => {
+    // console.log(req)
+    try {
+      console.log(req.query)
+      let id = req.query.serialnumber
+      let gateway = {
+        name: req.query.name,
+        ip4: req.query.ip4
+      }
+      await Meteor.call("updateGateway",id, gateway, function (error, mensaje) {
+        if (error) {
+          console.log(error);
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: error.message }))
+        } else {
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(mensaje))
         }
       })
       // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
@@ -131,14 +193,14 @@ if (Meteor.isServer) {
     // console.log(req)
     try {
       console.log(req.query)
-      await Meteor.call("removePeripheral",  req.query.id, function (error, mensaje) {
+      await Meteor.call("removePeripheral", req.query.id, function (error, mensaje) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ result: mensaje }))
+          res.end(JSON.stringify(mensaje))
         }
       })
       // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
@@ -157,14 +219,14 @@ if (Meteor.isServer) {
     // console.log(req)
     try {
       console.log(req.query)
-      await Meteor.call("removePeripheral",  req.query.id, function (error, mensaje) {
+      await Meteor.call("removePeripheral", req.query.id, function (error, mensaje) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ result: mensaje }))
+          res.end(JSON.stringify(mensaje))
         }
       })
       // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
@@ -193,10 +255,10 @@ if (Meteor.isServer) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ result: mensaje }))
+          res.end(JSON.stringify(mensaje))
         }
       })
       // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
@@ -225,10 +287,42 @@ if (Meteor.isServer) {
         if (error) {
           console.log(error);
           res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: error.message }))
+          res.end(JSON.stringify({ error: error.message }))
         } else {
           res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ result: mensaje }))
+          res.end(JSON.stringify(mensaje))
+        }
+      })
+      // res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+
+      //   res.end(req.query.idPeli);
+
+
+
+    } catch (error) {
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ error: error.message }))
+    }
+
+  });
+  endpoint.get("/updateperipheral", async (req, res) => {
+    // console.log(req)
+    try {
+      console.log(req.query)
+      let id = req.query.id
+      let peripheral = {
+        uid: req.query.uid,
+        vendor: req.query.vendor,
+        status: req.query.status == "online" ? "online" : "offline"
+      }
+      await Meteor.call("updatePeripheral", id, peripheral, function (error, mensaje) {
+        if (error) {
+          console.log(error);
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ error: error.message }))
+        } else {
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(mensaje))
         }
       })
       // res.setHeader('Content-Type', 'text/plain; charset=utf-8')

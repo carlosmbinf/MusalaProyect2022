@@ -124,7 +124,7 @@ export default function CreateGateway(option) {
         if (error) {
           console.log(error);
         } else {
-          setMessage(mensaje);
+          mensaje.error ? setMessage(mensaje.error) : setMessage(mensaje.result)
           handleClick(TransitionUp);
           setLoad(false);
           setOpen(true);
