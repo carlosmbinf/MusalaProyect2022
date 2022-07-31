@@ -146,10 +146,25 @@ curl http://localhost:3000/updategateway?serialnumber=334-34433-43434&name=Gatew
     //Values ​​to Update
     uid             // ONLY NUMBER
     vendor
+    status          // Change to online/offline -- OPTIONAL
 ```
 #### example
 ```bash
-curl 
+curl http://localhost:3000/updateperipheral?id=Pq3wrvHg6ik7wCjPQ&uid=52277888788&vendor=Vendor1
+```
+```js
+// This returns an element JSON
+{
+    result: "Message returned"
+}
+//In case of error
+{
+    error: "Message returned"
+}
+```
+#### example - change to online/offline
+```bash
+curl http://localhost:3000/updateperipheral?id=Pq3wrvHg6ik7wCjPQ&status=${online/offline}
 ```
 ```js
 // This returns an element JSON
