@@ -1,10 +1,9 @@
 module.exports = {
   apps : [{
-    name: "VIDKAR",
+    name: "Musaka Soft - Proyect",
     script: "npm start",
     env: {
       NODE_ENV: "development",
-      "ROOT_URL": "https://vidkar.ddns.net/",
       "PORT": 3000,
     },
     env_production: {

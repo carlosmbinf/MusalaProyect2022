@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PeripheralTable(option) {
+export default function PeripheralTableByGateway(option) {
   const classes = useStyles();
   React.useState(null);
   const dt = React.useRef(null);
@@ -114,23 +114,20 @@ export default function PeripheralTable(option) {
   };
 
   const peripheralRegister = useTracker(() => {
-    Meteor.subscribe("peripherals", option.selector ? option.selector : {});
     let a = [];
-
-    PeripheralsCollection.find(option.selector ? option.selector : {}, {
-      sort: { createdAt: 1 },
-    }).map(
-      (data) =>
-        data &&
-        a.push({
-          id: data._id,
-          uid: data.uid,
-          vendor: data.vendor,
-          createdAt: data.createdAt.toString(),
-          status: data.status,
-        })
-    );
-
+    option.peripherals&&option.peripherals.map(element=>{
+      Meteor.subscribe("peripherals", element.id);
+     let data = PeripheralsCollection.findOne(element.id)
+          data &&
+          a.push({
+            id: data._id,
+            uid: data.uid,
+            vendor: data.vendor,
+            createdAt: data.createdAt.toString(),
+            status: data.status,
+          })
+      
+    })
     return a;
   });
 
@@ -189,7 +186,6 @@ export default function PeripheralTable(option) {
       }
     });
 
-    // history.push("/");
   };
   const eliminarBodyTemplate = (rowData) => {
     return (
@@ -197,7 +193,6 @@ export default function PeripheralTable(option) {
         <span className="p-column-title"></span>
         <Tooltip title={"Eliminar a " + rowData.uid}>
           <IconButton
-            // disabled
             aria-label="delete"
             color="primary"
             onClick={() => {

@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { Paper, Box, Grid, Icon, IconButton, Zoom, Dialog, CircularProgress } from "@material-ui/core";
+import { Paper, Grid, IconButton, Zoom, Dialog, CircularProgress } from "@material-ui/core";
 import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import Select from "@material-ui/core/Select";
@@ -14,19 +11,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import Slide from "@material-ui/core/Slide";
-import { Link, useParams } from "react-router-dom";
-import Rotate from 'react-reveal/Rotate';
+import { Link } from "react-router-dom";
 //icons
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
-import PermContactCalendarRoundedIcon from "@material-ui/icons/PermContactCalendarRounded";
-import { FormControl, TextField, InputAdornment } from "@material-ui/core";
-import MailIcon from "@material-ui/icons/Mail";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import { FormControl, TextField } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
-import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { Fade } from "react-reveal";
 import { GatewaysCollection } from "./collections/collections";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     // maxWidth: 275,
     borderRadius: 20,
     padding: "2em",
-    marginBottom:"2em"
+    marginBottom: "2em"
   },
   bullet: {
     display: "inline-block",
@@ -87,7 +76,7 @@ export default function CreatePeripheral(option) {
   const [message, setMessage] = React.useState("");
   const [transition, setTransition] = React.useState(undefined);
   const [load, setLoad] = React.useState(false);
-  
+
   function TransitionUp(props) {
     return <Slide {...props} direction="up" />;
   }
@@ -100,13 +89,13 @@ export default function CreatePeripheral(option) {
     setMessage("");
   };
   const gatewayList = useTracker(() => {
-    Meteor.subscribe("gateway", option.selector?option.selector:{});  
-    return GatewaysCollection.find(option.selector?option.selector:{}).fetch();
+    Meteor.subscribe("gateway", option.selector ? option.selector : {});
+    return GatewaysCollection.find(option.selector ? option.selector : {}).fetch();
   });
 
   function handleSubmitPeripheral(event) {
     event.preventDefault();
-    
+
     async function makePostRequest() {
       setLoad(true);
 
@@ -114,7 +103,7 @@ export default function CreatePeripheral(option) {
         uid,
         vendor
       }
-      await Meteor.call("addPeripheral", periphe,idGateway, function (error, mensaje) {
+      await Meteor.call("addPeripheral", periphe, idGateway, function (error, mensaje) {
         if (error) {
           console.log(error);
         } else {
@@ -128,10 +117,10 @@ export default function CreatePeripheral(option) {
 
     makePostRequest();
   }
-  
 
-   function handleChange(event) {
-     setidGateway(event.target.value);
+
+  function handleChange(event) {
+    setidGateway(event.target.value);
   };
 
   const classes = useStyles();
@@ -155,25 +144,22 @@ export default function CreatePeripheral(option) {
         </Grid>
       </Dialog>
       <Snackbar
-              autoHideDuration={3000}
-              open={open}
-              onClose={handleClose}
-              TransitionComponent={transition}
-              message={message}
-              key={transition ? transition.name : ""}
-            />
+        autoHideDuration={3000}
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={transition}
+        message={message}
+        key={transition ? transition.name : ""}
+      />
       <Zoom in={true}>
         <Grid
           container
           direction="column"
           justify="center"
           alignItems="center"
-          
+
         >
           <Paper elevation={5} className={classes.root}>
-            
-            {/* <Button onClick={handleClick(TransitionUp)}>Up</Button> */}
-
             <Grid
               container
               direction="column"
@@ -244,11 +230,8 @@ export default function CreatePeripheral(option) {
                           // defaultValue={""}
                           required={true}
                         >
-                          {/* <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem> */}
                           {gatewayList.map(element => <MenuItem key={element._id} value={element._id}>{element.name}</MenuItem>)}
-                          
+
                         </Select>
                       </FormControl>
                     </Grid>
@@ -270,7 +253,7 @@ export default function CreatePeripheral(option) {
               </Grid>
             </Grid>
           </Paper>
-          
+
         </Grid>
 
       </Zoom>

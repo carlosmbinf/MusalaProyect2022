@@ -10,6 +10,10 @@ import {
   DialogContentText,
   DialogActions,
   DialogContent,
+  useMediaQuery,
+  Grid,
+  FormControl,
+  TextField,
 } from "@material-ui/core";
 
 import { Meteor } from "meteor/meteor";
@@ -28,11 +32,14 @@ import "./Table.css";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 
+
 //Collections
 import {
   GatewaysCollection,
 } from "./collections/collections";
 import { useHistory } from "react-router-dom";
+import { useTheme } from "@material-ui/styles";
+import PeripheralTableByGateway from "./PeripheralTableByGateway";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -101,17 +108,45 @@ export default function GatewayTable(option) {
   const dt = React.useRef(null);
   const history = useHistory();
   const [openAlert, setOpenAlert] = React.useState(false);
-  const [userid, setUserId] = React.useState();
+  const [openDetails, setOpenDetails] = React.useState(false);
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState('xl');
+  const [nameChange, setNameChange] = React.useState();
+  const [ip4Change, setIp4Change] = React.useState();
+
+  const [idGateway, setIdGateway] = React.useState();
+  
+  const theme = useTheme();
 
   const handleClickAlertOpen = (id) => {
     setOpenAlert(true);
-    setUserId(id);
+    setIdGateway(id);
   };
   const handleAlertClose = () => {
     setOpenAlert(false);
-    setUserId(null);
+    setIdGateway(null);
   };
+  const updateGate = async () => {
+    let gatew = {
+      name:nameChange,
+      ip4:ip4Change
+    }
 
+    await Meteor.call("updateGateway", idGateway, gatew, function (error, mensaje) {
+      if (error) {
+        console.log(error);
+      } else {
+        
+        alert(mensaje.error?mensaje.error:mensaje.result);
+        mensaje.result&&setOpenDetails(false);
+        mensaje.result&&setIdGateway("")
+        mensaje.result&&setIp4Change("")
+        mensaje.result&&setNameChange("")
+      }
+    })
+
+   
+  }
   const gatewayRegister = useTracker(() => {
     Meteor.subscribe("gateway", option.selector ? option.selector : {});
 
@@ -126,7 +161,6 @@ export default function GatewayTable(option) {
           serialNumber: data._id,
           name: data.name,
           ip4: data.ip4,
-          // countperipherals: data.peripherals.length,
         })
     );
 
@@ -142,7 +176,6 @@ export default function GatewayTable(option) {
   const serialNumberBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        {/* <span className="p-column-title">ID</span> */}
         {rowData.serialNumber}
       </React.Fragment>
     );
@@ -150,7 +183,6 @@ export default function GatewayTable(option) {
   const nombreBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        {/* <span className="p-column-title">Nombre y Apellidos</span> */}
         {rowData.name}
       </React.Fragment>
     );
@@ -158,7 +190,6 @@ export default function GatewayTable(option) {
   const ip4BodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        {/* <span className="p-column-title">Username</span> */}
         {rowData.ip4}
       </React.Fragment>
     );
@@ -177,13 +208,12 @@ export default function GatewayTable(option) {
       }
     });
 
-    // history.push("/");
   };
   const eliminarBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
         <span className="p-column-title"></span>
-        <Tooltip title={"Eliminar a " + rowData.name}>
+        <Tooltip title={"Remove:" + rowData.name}>
           <IconButton
             // disabled
             aria-label="delete"
@@ -198,19 +228,42 @@ export default function GatewayTable(option) {
       </React.Fragment>
     );
   };
-
+  const detailsBodyTemplate = (rowData) => {
+    return (
+      <>
+        <React.Fragment>
+          <span className="p-column-title"></span>
+          <Tooltip title={"Details: " + rowData.name}>
+            <IconButton
+              // disabled
+              aria-label="delete"
+              color="primary"
+              onClick={() => {
+                setIdGateway(rowData.serialNumber)
+                setIp4Change(rowData.ip4)
+                setNameChange(rowData.name)
+                setOpenDetails(true);
+              }}
+            >
+              <ListAltIcon fontSize="large" />
+            </IconButton>
+          </Tooltip>
+        </React.Fragment>
+      </>
+      
+    );
+  };
   return (
     <>
       <Dialog
         open={openAlert}
-        // onClose={handleAlertClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">{"Alert!!!"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {`Do you want to remove the Gateway and its corresponding Peripherals?`}?
+            {`Do you want to remove the Gateway and its corresponding Peripherals?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -219,12 +272,78 @@ export default function GatewayTable(option) {
           </Button>
           <Button
             onClick={() => {
-              eliminarGateway(userid);
+              eliminarGateway(idGateway);
             }}
             color="secondary"
             autoFocus
           >
             Remove
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        fullWidth={fullWidth}
+        maxWidth={maxWidth}
+        open={openDetails}
+        // onClose={handleClose}
+        aria-labelledby="max-width-dialog-title"
+      >
+        <DialogTitle id="max-width-dialog-title">{"Update Gateway"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`Here you can update the data corresponding to the selected Gateway`}
+          </DialogContentText>
+          <Grid container 
+            direction="row"
+            alignItems="center"
+            spacing={1}>
+            <Grid item xs={12}>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  fullWidth
+                  // className={classes.margin}
+                  id="name"
+                  name="name"
+                  label="Name"
+                  variant="outlined"
+                  color="secondary"
+                  value={nameChange}
+                  onInput={(e) =>
+                    setNameChange(e.target.value)
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  fullWidth
+                  // className={classes.margin}
+                  id="ip4"
+                  name="ip4"
+                  label="IP4"
+                  variant="outlined"
+                  color="secondary"
+                  value={ip4Change}
+                  onInput={(e) =>
+                    setIp4Change(e.target.value)
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <PeripheralTableByGateway peripherals={GatewaysCollection.findOne(idGateway)&&GatewaysCollection.findOne(idGateway).peripherals}/>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>setOpenDetails(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => updateGate()}
+            color="secondary"
+            autoFocus
+          >
+            Update
           </Button>
         </DialogActions>
       </Dialog>
@@ -262,10 +381,10 @@ export default function GatewayTable(option) {
                 />
                 <Column
                   field="name"
-                  header="Nombre"
+                  header="Name"
                   body={nombreBodyTemplate}
                   filter
-                  filterPlaceholder="Nombre y Apellidos"
+                  filterPlaceholder="Name"
                   filterMatchMode="contains"
                 />
                 <Column
@@ -277,7 +396,13 @@ export default function GatewayTable(option) {
                   filterMatchMode="contains"
                 />
                 <Column
-                  field="eliminar"
+                  field="details"
+                  header=""
+                  body={detailsBodyTemplate}
+                />
+                
+                <Column
+                  field="remove"
                   header=""
                   body={eliminarBodyTemplate}
                 />

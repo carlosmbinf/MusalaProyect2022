@@ -23,9 +23,9 @@ export const theme = createMuiTheme({
     secondary: {
       main: '#f50057',
     },
-    // text:{
-    //   secondary:'#f50057',
-    //   primary: '#2453A2',
-    // }
+    text:{
+      secondary:'#f50057',
+      primary: '#2453A2',
+    }
   },
 });
